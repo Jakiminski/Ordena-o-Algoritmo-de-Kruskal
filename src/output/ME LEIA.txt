@@ -1,0 +1,11 @@
+VerticesDaMST é o arquivo que vai receber
+	o output de cada execução do programa.
+Para salvar os resultados, copie-o.
+
+Os arquivos de nome GABARITO são os resultados das saídas 
+para algoritmos estáveis (A ordem das arestas é idêntica em
+InsertSort, MergeSort, Counting; já que preserva a ordem 
+relativa dos mesmos). 
+GABARITO Não serve para
+algoritmos não-estáveis, uma vez que não preserva a ordem dos
+vértices, apesar de ordená-los pelo peso do vértice do grafo. 
