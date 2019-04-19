@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			arvoreGeradoraMinima =  grafo.executarKruskal() 
 			SalvarArvoreGeradoraMinimaEmArquivo(arquivoSaida, arvoreGeradoraMinima)
 
-		elif sys.argv[2].lower() == 'selectionsort': # TODO // CONSERTAR BUG
+		elif sys.argv[2].lower() == 'selectionsort':
 			algoritmoDeOrdenacao = SelectionSort()
 			grafo = Grafo()
 			grafo.estabelecerAlgoritmoDeOrdenacao(algoritmoDeOrdenacao)
@@ -79,8 +79,7 @@ if __name__ == '__main__':
 			SalvarArvoreGeradoraMinimaEmArquivo(arquivoSaida, arvoreGeradoraMinima)
 
 
-		elif sys.argv[2].lower() == 'countingsort': # TODO // CONSERTAR BUG
-			'''
+		elif sys.argv[2].lower() == 'countingsort':
 			algoritmoDeOrdenacao = CountingSort()
 			grafo = Grafo()
 			grafo.estabelecerAlgoritmoDeOrdenacao(algoritmoDeOrdenacao)
@@ -88,16 +87,16 @@ if __name__ == '__main__':
 
 			arvoreGeradoraMinima =  grafo.executarKruskal() 
 			SalvarArvoreGeradoraMinimaEmArquivo(arquivoSaida, arvoreGeradoraMinima)
-			'''
-			print("Não implementado ainda.")
+			
 		else:
 			#Printar erro e fechar programa
 			print('ERRO: Método de ordenação \'{}\'desconhecido.'.format(sys.argv[2]))
 			sys.exit('Métodos de ordenação registrados: InsertSort, SelectionSort, ShellSort, QuickSort, MergeSort, HeapSort e CountingSort.')
 			
+		print('Arquivo de saída \'{}\' gerado com sucesso.'.format(arquivoSaida))
 	else:
 		print('Insira os parâmetros corretamente. Formato: <Input File> <Ordenar> <Adicional Ordenação>')
 		print('EXEMPLOS: \'input/7vertices.json InsertSort\' OU \'input/100vertices.json quicksort random\'')
 		print('Se pretende usar o QuickSort, tipos de particionamento: \'first\', \'last\', \'random\' e \'mediana\'')
 		print('Formato (QuickSort): <Input File> \'QuickSort\' <particionamento Quick>')
-		
+	sys.exit(0)

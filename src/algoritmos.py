@@ -44,9 +44,9 @@ class InsertSort(object):
 			j = i-1 #índice do antecessor da chaveW
 			while j>=0 and chaveW<int(colecao[j]['weight']):
 			#move todos as arestas maiores à direita
-				colecao[j+1]['source'] = int(colecao[j]['source'])
-				colecao[j+1]['target'] = int(colecao[j]['target'])
-				colecao[j+1]['weight'] = int(colecao[j]['weight'])
+				colecao[j+1]['source'] = colecao[j]['source']
+				colecao[j+1]['target'] = colecao[j]['target']
+				colecao[j+1]['weight'] = colecao[j]['weight']
 				j -= 1 #corrige o índice com decremento
 			#inserir aresta antes dos elementos movidos
 			colecao[j+1]['source'],colecao[j+1]['target'] = chaveS, chaveT
@@ -75,9 +75,8 @@ class SelectionSort(object):
 				if int(colecao[j]['weight'])<int(colecao[menor]['weight']):
 					menor = j # att índice do menor elemento
 			# troca o menor elemento com o elemento da i-esima posição # SWAP
-			colecao[menor]['weight'],colecao[i]['weight'] = colecao[i]['weight'],colecao[menor]['weight']
-			colecao[menor]['source'],colecao[i]['source'] = colecao[i]['source'],colecao[menor]['source']
-			colecao[menor]['target'],colecao[i]['target'] = colecao[i]['target'],colecao[menor]['target']
+			colecao[menor],colecao[i] = colecao[i],colecao[menor]
+
 		return colecao
 
 '''
@@ -106,14 +105,14 @@ class ShellSort(object):
 				chaveS, chaveT = int(colecao[i]['source']),int(colecao[i]['target'])
 				j=i
 				while j>=salto and chaveW<int(colecao[j-salto]['weight']):
-					colecao[j]['weight'] = colecao[j-salto]['weight']
-					colecao[j]['source'],colecao[j]['target'] = colecao[j-salto]['source'],colecao[j-salto]['target']
+					colecao[j] = colecao[j-salto]
 					j -= salto # corrige o índice
 				#inserir chave antes dos elementos movidos
 				colecao[j]['weight'] = chaveW
 				colecao[j]['source'] = chaveS
 				colecao[j]['target'] = chaveT
 			salto //= 2 # att salto
+
 		return colecao
 
 '''
@@ -151,7 +150,9 @@ class QuickSort(object):
 			# PASSO RECURSIVO
 			self.ordenar(colecao,0,index-1,metodo) #elementos à esquerda do pivô
 			self.ordenar(colecao,index+1,len(colecao),metodo) #elementos à direita do pivô
+		
 		return colecao
+
 	'''
 	Particionamento, excluindo o pivô um nível acima da pilha de execução
 	Args: colecao e índices de início e fim de cada partição
@@ -163,12 +164,9 @@ class QuickSort(object):
 		for j in range(inicio,fim):
 			if int(colecao[j]['weight'])<=pivot:
 				i += 1
-				colecao[i]['weight'],colecao[j]['weight'] = colecao[j]['weight'],colecao[i]['weight'] #swap
-				colecao[i]['source'],colecao[j]['source'] = colecao[j]['source'],colecao[i]['source']
-				colecao[i]['target'],colecao[j]['target'] = colecao[j]['target'],colecao[i]['target']
-		colecao[i+1]['weight'],colecao[fim]['weight'] = colecao[fim]['weight'],colecao[i+1]['weight'] #swap
-		colecao[i+1]['source'],colecao[fim]['source'] = colecao[fim]['source'],colecao[i+1]['source']
-		colecao[i+1]['target'],colecao[fim]['target'] = colecao[fim]['target'],colecao[i+1]['target']
+				colecao[i],colecao[j] = colecao[j],colecao[i] #swap
+		colecao[i+1],colecao[fim] = colecao[fim],colecao[i+1] #swap
+		
 		return i+1 #será índice do pivô na coleção
 	
 	def particionaComeco(colecao,inicio,fim):
@@ -179,9 +177,7 @@ class QuickSort(object):
 		random.seed()
 		i = random.randint(inicio,fim) #index do pivô (colecao[i])
 		# trocar o pivô e o último elemento
-		colecao[i]['weight'],colecao[fim]['weight'] = colecao[fim]['weight'],colecao[i]['weight']#SWAP
-		colecao[i]['source'],colecao[fim]['source'] = colecao[fim]['source'],colecao[i]['source']
-		colecao[i]['target'],colecao[fim]['target'] = colecao[fim]['target'],colecao[i]['target']
+		colecao[i],colecao[fim] = colecao[fim],colecao[i]#SWAP
 		# executar outro método de partição
 		return particionaFim(colecao,inicio,fim)
 	
@@ -213,8 +209,8 @@ class MergeSort(object):
 			right = colecao[meio:]# colecao[meio:len(colecao)]
 
 			#Passos de recursão do algoritmo para ambas as partes
-			left = self.ordenar(left)
-			right = self.ordenar(right)
+			self.ordenar(left)
+			self.ordenar(right)
 			
 			#2.Passo Base: 
 			
@@ -222,37 +218,29 @@ class MergeSort(object):
 			i = j = k = 0 # Índices respectivos a colecao, left e right
 			while j<len(left) and k<len(right):
 				#Encontrar o menor elemento de cada sublista de colecao
-				if left[j]['weight']<right[k]['weight']:
+				if int(left[j]['weight'])<=int(right[k]['weight']):
 				#left[j] será add a colecao antes (ordem crescente)
-					colecao[i]['weight'] = colecao[j]['weight']
-					colecao[i]['source'] = colecao[j]['source']
-					colecao[i]['target'] = colecao[j]['target']
+					colecao[i] = colecao[j]
 					j += 1 # iterar em left
 				else: 
 				#right[k] será add a colecao antes
-					colecao[i]['weight'] = right[k]['weight']
-					colecao[i]['source'] = right[k]['source']
-					colecao[i]['target'] = right[k]['target']  
+					colecao[i] = right[k]
 					k += 1 #iterar em right
 				i += 1 #Por fim, att a posicao de colecao para inserir o menor
-			print(left)
-			print(right)
+			
 			#2.2Add elementos restantes das sublistas, se houver
 			while j<len(left):
-				colecao[i]['weight'] = left[j]['weight']
-				colecao[i]['source'] = left[j]['source']
-				colecao[i]['target'] = left[j]['target']
+				colecao[i] = left[j]
 				#att índices
 				i += 1
 				j += 1
 				
 			while k<len(right):
-				colecao[i]['weight'] = right[k]['weight']
-				colecao[i]['source'] = right[k]['source']
-				colecao[i]['target'] = right[k]['target']
+				colecao[i] = right[k]
 				#att índices
 				i += 1
 				k += 1
+		
 		return colecao
 
 '''
@@ -267,6 +255,41 @@ Execução: 'SelectionSort', mas para o maior elemento.
 '''
 class HeapSort(object):
 	def ordenar(self,colecao):
+		tam = len(colecao) #tamanho do vetor
+		# Construir MaxHeap
+		for index in range(tam,-1,-1):
+			maxHeapify(self,colecao,tam,index)
+
+		# Extrair os elementos na ordem correta
+		for index in range(tam-1,0,-1):
+			#print(colecao)
+			colecao[index],colecao[0] = colecao[0],colecao[index]#SWAP
+			maxHeapify(self,colecao,index,0)
+		
+		return colecao
+
+	'''
+	Construir Heap
+	Args: vetor/sublista o tamanho do Heap, e o índice da raíz do heap 
+	Returns: implicitamente, a mesma coleção organizada em Heap
+	'''
+	def maxHeapify(self,colecao,tam,index):
+		maior = index # índice da "raiz" do heap,
+		left, right = 2*index + 1, 2*index + 2 # índices dos filhos
+
+		# Checa se o filho esquerdo da raíz existe e é maior que o pai
+		if left < tam and int(colecao[index]['weight']) < int(colecao[left]['weight']):
+			maior = left
+		# Checa se o filho direito da raíz existe e é maior que o pai
+		if right < tam and int(colecao[maior]['weight']) < int(colecao[right]['weight']):
+			maior = right
+
+		# Construir/Manter o Heap, trocando a raíz quando necessário
+		if maior != index: # SWAP
+			colecao[index], colecao[maior] = colecao[maior], colecao[index]
+			# heapify da raíz
+			maxHeapify(self,colecao,tam,maior)
+
 		return colecao
 
 '''

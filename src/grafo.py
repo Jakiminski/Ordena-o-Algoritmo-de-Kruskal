@@ -46,9 +46,10 @@ class Grafo(object):
         floresta =  [ [vertice['id'] ] for vertice in self.vertices]
         arvoreGeradoraMinima = []
         
-        # Ordencão das arestas iniciada
-        arestasOrdenadas = self.algoritmoDeOrdenacao.ordenar( copy.copy(self.arestas) )
-        
+
+        # Ordenacão das arestas iniciada
+        arestasOrdenadas = self.algoritmoDeOrdenacao.ordenar(copy.copy(self.arestas))
+
         # Ordencão das arestas finalizada
         while len(arestasOrdenadas):
             aresta = arestasOrdenadas.pop(0)
